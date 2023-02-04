@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Garbage Sorting</string>
+    <string name="explain_text">Where to place items in:</string>
+    <string name="where_button">Where</string>
+</resources>

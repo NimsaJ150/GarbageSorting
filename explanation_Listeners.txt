@@ -1,0 +1,23 @@
+Give a short explanation about “Listeners” like this:
+
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+          do something  }
+});
+
+Your explanation should clarify why this is an example of Concurrency.
+
+-----
+
+A Listener is an Interface defined for a callback to be invoked when some form of interaction takes place with a user.
+It "listens" or waits for this interaction or event to happen.
+Inside the Listener a callback method is defined. This method and, thus, all actions inside of it are executed when the interaction with a view takes place.
+
+In this code example, the interaction is a click and the view is a button.
+Therefore, the code example shows a Listener that "does something" when the button "button" is clicked.
+The Listener is an "View.OnClickListener()" and the callback method, that needs to be defined is the "onClick(View view)" method.
+
+This is an example of inherent concurrency as the Listener is an independent stream that awaits the OnClick interaction of the user with the button.
+The rest of the program is still running independently of the Listener.
+This means that multiple actions to be handled simultaneously without blocking the main thread of execution.
