@@ -29,7 +29,16 @@
         android:id="@+id/where_button"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:background="#39f208"
         android:text="@string/where_button" />
+
+    <!-- Add item button -->
+    <Button
+        android:id="@+id/add_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        android:background="#39f208"
+        android:text="@string/add_button" />
 </LinearLayout>
