@@ -1,0 +1,5 @@
+coffee, Irma
+carrots, Netto
+milk, Netto
+bread, bakery
+butter, Irma
