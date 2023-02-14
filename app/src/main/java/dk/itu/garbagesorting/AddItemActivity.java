@@ -20,7 +20,7 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
 
         // define items
-        ItemsDB.initialize();
+        ItemsDB.initialize(AddItemActivity.this);
         itemsDB = ItemsDB.get();
 
         // Text Fields

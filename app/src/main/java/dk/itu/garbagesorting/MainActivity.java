@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // define items
-        ItemsDB.initialize();
+        ItemsDB.initialize(MainActivity.this);
         itemsDB = ItemsDB.get();
 
         // define text input
