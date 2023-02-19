@@ -41,7 +41,7 @@ class ItemsDB private constructor(context: Context) {
     }
 
     fun getItemWhere(what: String?): String {
-        val where: String? = itemsMap.get(what)
+        val where: String? = itemsMap[what]
         // if no match found, then return not found
         return where ?: "not found"
     }
