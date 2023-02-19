@@ -1,0 +1,45 @@
+newspaper, paper
+magazine, paper
+milk carton, food
+shoe box, cardboard
+can, metal
+book, paper
+aluminium foil (clean), metal
+teddy bears, daily waste
+flower pot (plastic), daily waste
+cables, metal
+envelopes, paper
+detergents, plastic
+musical instrument, wood
+cookware, metal
+hammer, metal
+curtain clips, metal
+jars, glass
+carpets, bulky waste
+postcards, cardboard
+chips bag, other
+tooth brush, plastic
+shampoo bottle, plastic
+capsule, metal
+needle, metal
+letter, paper
+plastic bottle, plastic
+meat, food waste
+clothes, other
+cutlery, metal
+paint, chemical
+chlorine, chemical
+computer, electronics
+battery, batteries
+printer, electronics
+potato, food
+cabbage, food
+kale, food
+cauliflower, food
+onion, food
+beetroot, food
+celeriac, food
+cellery, food
+flour, food
+sugar, food
+rice, food

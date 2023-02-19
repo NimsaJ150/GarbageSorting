@@ -21,7 +21,7 @@ class ItemsDB private constructor(context: Context) {
     private fun fillItemsDB(context: Context) {
         try {
             val reader = BufferedReader(
-                    InputStreamReader(context.assets.open("items.txt")))
+                    InputStreamReader(context.assets.open("garbage.txt")))
             var line = reader.readLine()
             while (line != null) {
                 val gItem: List<String> = line.split(",")
