@@ -21,7 +21,8 @@ class ItemsDB private constructor(context: Context) {
     private fun fillItemsDB(context: Context) {
         try {
             val reader = BufferedReader(
-                    InputStreamReader(context.assets.open("garbage.txt")))
+                InputStreamReader(context.assets.open("garbage.txt"))
+            )
             var line = reader.readLine()
             while (line != null) {
                 val gItem: List<String> = line.split(",")
@@ -52,15 +53,15 @@ class ItemsDB private constructor(context: Context) {
 
     companion object {
         private var sItemsDB: ItemsDB? = null
-        @JvmStatic
+
         fun initialize(context: Context) {
-            if (sItemsDB == null) sItemsDB = ItemsDB(context)
+            if (sItemsDB == null) {
+                sItemsDB = ItemsDB(context)
+            }
         }
 
-        @JvmStatic
-        fun get(): ItemsDB? {
-            checkNotNull(sItemsDB) { "ItemsDB must be initialized" }
-            return sItemsDB
+        fun get(): ItemsDB {
+            return sItemsDB ?: throw IllegalStateException("ItemsDB must be initializes")
         }
     }
 }

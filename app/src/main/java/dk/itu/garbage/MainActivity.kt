@@ -7,6 +7,10 @@ import android.content.Intent
 import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
+
+    // Model: Database of items
+    private lateinit var itemsDB: ItemsDB
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             // get text from input
             val itemText = insertItem.text.toString()
             // retrieve location from ItemsDB
-            val itemWhere = itemsDB!!.getItemWhere(itemText)
+            val itemWhere = itemsDB.getItemWhere(itemText)
 
             // output result
             insertItem.append(String.format(" should be placed in: %s", itemWhere))
@@ -36,10 +40,5 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, AddItemActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    companion object {
-        // Model: Database of items
-        private var itemsDB: ItemsDB? = null
     }
 }

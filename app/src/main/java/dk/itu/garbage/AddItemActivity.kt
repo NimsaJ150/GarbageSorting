@@ -7,6 +7,10 @@ import android.widget.EditText
 import android.widget.Toast
 
 class AddItemActivity : AppCompatActivity() {
+
+    // Model: Database of items
+    private lateinit var itemsDB: ItemsDB
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
@@ -29,15 +33,10 @@ class AddItemActivity : AppCompatActivity() {
             // check whether input was provided
             if (whatS.isNotEmpty() && whereS.isNotEmpty()) {
                 // add item to the itemsDB
-                itemsDB?.addItem(whatS, whereS)
+                itemsDB.addItem(whatS, whereS)
                 newWhat.setText("")
                 newWhere.setText("")
             } else Toast.makeText(this@AddItemActivity, R.string.empty_toast, Toast.LENGTH_LONG).show()
         }
-    }
-
-    companion object {
-        // Model: Database of items
-        private var itemsDB: ItemsDB? = null
     }
 }
