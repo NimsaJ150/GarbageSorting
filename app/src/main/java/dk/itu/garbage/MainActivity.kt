@@ -1,10 +1,9 @@
 package dk.itu.garbage
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
-import android.content.Intent
-import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,31 +13,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // define items
         ItemsDB.initialize(this@MainActivity)
         itemsDB = ItemsDB.get()
+        setUpFragments()
 
-        // define text input
-        val insertItem = findViewById<EditText>(R.id.insert_item)
+    }
 
-        // define WHERE onClick activity
-        val whereItem = findViewById<Button>(R.id.where_button)
-        whereItem.setOnClickListener {
-            // get text from input
-            val itemText = insertItem.text.toString()
-            // retrieve location from ItemsDB
-            val itemWhere = itemsDB.getItemWhere(itemText)
+    private fun setUpFragments() {
 
-            // output result
-            insertItem.append(String.format(" should be placed in: %s", itemWhere))
-        }
-
-        // define ADD ITEM onClick activity
-        val addItem = findViewById<Button>(R.id.add_button)
-        addItem.setOnClickListener { // start new activity
-            val intent = Intent(this@MainActivity, AddItemActivity::class.java)
-            startActivity(intent)
+        val fm: FragmentManager = supportFragmentManager
+        var fragmentUI = fm.findFragmentById(R.id.container_ui)
+        var fragmentList = fm.findFragmentById(R.id.container_list)
+        if (fragmentUI == null && fragmentList == null) {
+            fragmentUI = WhereFragment()
+            fragmentList = ListFragment()
+            fm.beginTransaction()
+                .add(R.id.container_ui, fragmentUI)
+                .commit()
+            fm.beginTransaction()
+                .add(R.id.container_list, fragmentList)
+                .commit()
         }
     }
 }

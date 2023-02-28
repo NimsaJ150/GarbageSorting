@@ -1,11 +1,12 @@
 package dk.itu.garbage
 
 import android.content.Context
+import java.util.Observable
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
-class ItemsDB private constructor(context: Context) {
+class ItemsDB private constructor(context: Context): Observable() {
     private val itemsMap = HashMap<String, String?>()
 
     init {
@@ -29,16 +30,23 @@ class ItemsDB private constructor(context: Context) {
                 itemsMap[gItem[0]] = gItem[1]
                 line = reader.readLine()
             }
+            this.setChanged()
+            this.notifyObservers()
         } catch (ignored: IOException) {
         }
     }
 
     fun addItem(what: String, where: String?) {
         itemsMap[what] = where
+        this.setChanged()
+        this.notifyObservers()
+
     }
 
     fun removeItem(what: String) {
         if (itemsMap[what] != null) itemsMap.remove(what)
+        this.setChanged()
+        this.notifyObservers()
     }
 
     fun getItemWhere(what: String?): String {
