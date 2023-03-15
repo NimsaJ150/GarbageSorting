@@ -58,5 +58,16 @@
         android:layout_width="wrap_content"
         android:layout_gravity="start"
         android:background="#39f208"
+        android:layout_marginBottom="5dp"
         android:text="@string/add_button" />
+
+    <!-- Button to delete item-->
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        android:background="#39f208"
+        android:layout_marginBottom="5dp"
+        android:text="@string/delete_button" />
 </LinearLayout>
