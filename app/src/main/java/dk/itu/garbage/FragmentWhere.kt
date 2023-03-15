@@ -8,13 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.lifecycle.ViewModelProvider
 
 /**
  * A simple [Fragment] subclass.
- * Use the [WhereFragment.newInstance] factory method to
+ * Use the [FragmentWhere.newInstance] factory method to
  * create an instance of this fragment.
  */
-class WhereFragment : Fragment() {
+class FragmentWhere : Fragment() {
 
     // Model: Database of items
     private lateinit var itemsDB: ItemsDB
@@ -23,7 +24,7 @@ class WhereFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         // define items
-        itemsDB = ItemsDB.get()
+        itemsDB= ViewModelProvider(requireActivity())[ItemsDB::class.java]
     }
 
     override fun onCreateView(
@@ -49,9 +50,9 @@ class WhereFragment : Fragment() {
         }
 
         // define ADD ITEM onClick activity
-        val addItem = v.findViewById<Button>(R.id.add_button)
+        val addItem = v.findViewById<Button>(R.id.modify_button)
         addItem.setOnClickListener { // start new activity
-            val intent = Intent(context, AddItemActivity::class.java)
+            val intent = Intent(context, ActivityModify::class.java)
             startActivity(intent)
         }
 

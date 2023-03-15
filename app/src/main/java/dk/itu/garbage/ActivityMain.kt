@@ -5,18 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
 
-class MainActivity : AppCompatActivity() {
-
-    // Model: Database of items
-    private lateinit var itemsDB: ItemsDB
+class ActivityMain : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ItemsDB.initialize(this@MainActivity)
-        itemsDB = ItemsDB.get()
         setUpFragments()
-
     }
 
     private fun setUpFragments() {
@@ -25,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         var fragmentUI = fm.findFragmentById(R.id.container_ui)
         var fragmentList = fm.findFragmentById(R.id.container_list)
         if (fragmentUI == null && fragmentList == null) {
-            fragmentUI = WhereFragment()
-            fragmentList = ListFragment()
+            fragmentUI = FragmentWhere()
+            fragmentList = FragmentList()
             fm.beginTransaction()
                 .add(R.id.container_ui, fragmentUI)
                 .commit()

@@ -7,30 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import java.util.*
 
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ListFragment.newInstance] factory method to
+ * Use the [FragmentList.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ListFragment : Fragment(), Observer {
+class FragmentList : Fragment() {
 
     // Model: Database of items
     private lateinit var itemsDB: ItemsDB
     private lateinit var listThings: TextView
 
-    override fun update(observable: Observable?, data: Any?) {
-        listThings.text = "Shopping List" + itemsDB.listItems()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // define items
-        itemsDB = ItemsDB.get()
-        itemsDB.addObserver(this);
+        itemsDB = ViewModelProvider(requireActivity())[ItemsDB::class.java]
     }
 
     override fun onCreateView(
@@ -42,7 +38,10 @@ class ListFragment : Fragment(), Observer {
 
         listThings = v.findViewById<TextView>(R.id.listItems)
         listThings.movementMethod = ScrollingMovementMethod()
-        listThings.text = "Shopping List" + itemsDB.listItems()
+
+        itemsDB.itemsMap.observe(viewLifecycleOwner) {
+            listThings.text = "Sorting List:" + itemsDB.listItems()
+        }
 
         return v
     }
