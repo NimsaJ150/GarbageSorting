@@ -25,7 +25,7 @@ class FragmentModify : Fragment() {
         super.onCreate(savedInstanceState)
 
         // define items
-        itemsDB= ViewModelProvider(requireActivity())[ItemsDB::class.java]
+        itemsDB = ViewModelProvider(requireActivity())[ItemsDB::class.java]
     }
 
     override fun onCreateView(

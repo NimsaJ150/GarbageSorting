@@ -9,6 +9,9 @@ class ActivityModify : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_modify)
+
+        ItemsDB.initialize(this@ActivityModify)
+
         setUpFragments()
     }
 

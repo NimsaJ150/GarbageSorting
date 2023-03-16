@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 
 /**
@@ -24,7 +26,7 @@ class FragmentWhere : Fragment() {
         super.onCreate(savedInstanceState)
 
         // define items
-        itemsDB= ViewModelProvider(requireActivity())[ItemsDB::class.java]
+        itemsDB = ViewModelProvider(requireActivity())[ItemsDB::class.java]
     }
 
     override fun onCreateView(
@@ -49,11 +51,28 @@ class FragmentWhere : Fragment() {
             insertItem.append(String.format(" should be placed in: %s", itemWhere))
         }
 
+        /*
         // define ADD ITEM onClick activity
         val addItem = v.findViewById<Button>(R.id.modify_button)
         addItem.setOnClickListener { // start new activity
             val intent = Intent(context, ActivityModify::class.java)
             startActivity(intent)
+        }*/
+
+        // define DELETE ITEM onClick activity
+        val deleteItem = v.findViewById<Button>(R.id.delete_button)
+        deleteItem.setOnClickListener {
+            // get text from input fields
+            val whatS: String = insertItem.text.toString().trim { it <= ' ' }
+
+            // check whether input was provided
+            if (whatS.isNotEmpty()) {
+                // add item to the itemsDB
+                itemsDB.removeItem(whatS)
+                insertItem.setText("")
+                insertItem.onEditorAction(EditorInfo.IME_ACTION_DONE); //to close the keyboard when done with the text
+            } else Toast.makeText(requireActivity(), R.string.empty_toast, Toast.LENGTH_LONG)
+                .show()
         }
 
         return v
