@@ -8,7 +8,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/item_no"
-		android:layout_weight="1"
+		android:layout_weight="1.5"
 		android:textSize="@dimen/text_size"/>
 	<TextView
 		android:layout_width="match_parent"
