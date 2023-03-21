@@ -30,8 +30,7 @@ class FragmentWhere : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_where, container, false)
@@ -51,28 +50,21 @@ class FragmentWhere : Fragment() {
             insertItem.append(String.format(" should be placed in: %s", itemWhere))
         }
 
-        /*
         // define ADD ITEM onClick activity
         val addItem = v.findViewById<Button>(R.id.modify_button)
         addItem.setOnClickListener { // start new activity
+            /*
             val intent = Intent(context, ActivityModify::class.java)
             startActivity(intent)
-        }*/
+             */
 
-        // define DELETE ITEM onClick activity
-        val deleteItem = v.findViewById<Button>(R.id.delete_button)
-        deleteItem.setOnClickListener {
-            // get text from input fields
-            val whatS: String = insertItem.text.toString().trim { it <= ' ' }
-
-            // check whether input was provided
-            if (whatS.isNotEmpty()) {
-                // add item to the itemsDB
-                itemsDB.removeItem(whatS)
-                insertItem.setText("")
-                insertItem.onEditorAction(EditorInfo.IME_ACTION_DONE); //to close the keyboard when done with the text
-            } else Toast.makeText(requireActivity(), R.string.empty_toast, Toast.LENGTH_LONG)
-                .show()
+            // replace fragment
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.container_ui,
+                    FragmentModify()
+                ).commit()
         }
 
         return v

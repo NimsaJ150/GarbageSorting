@@ -10,19 +10,33 @@ import java.io.InputStreamReader
 
 //class ItemsDB private constructor(context: Context) : ViewModel() {
 class ItemsDB : ViewModel() {
-    val itemsMap: MutableLiveData<HashMap<String, String?>> = MutableLiveData()
+    val itemsMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
 
     init {
-        itemsMap.value = HashMap<String, String?>()
+        itemsMap.value = HashMap<String, String>()
         //fillItemsDB(context)
         fillItemsDB()
     }
 
+    /*
+    Lists the items as a String with newline breaks
+     */
     fun listItems(): String {
         val r = StringBuilder()
         for ((key, value) in itemsMap.value!!) r.append("\n ").append(key).append(" in: ")
             .append(value)
         return r.toString()
+    }
+
+    /*
+    Returns the ItemsDB Hashmap in an ordered List
+     */
+    fun getAllList(): MutableList<Item> {
+        val result: MutableList<Item> = ArrayList()
+        for ((key, value) in itemsMap.value!!) {
+            result.add(Item(key, value))
+        }
+        return result
     }
 
     //private fun fillItemsDB(context: Context) {
@@ -48,7 +62,7 @@ class ItemsDB : ViewModel() {
         */
     }
 
-    fun addItem(what: String, where: String?) {
+    fun addItem(what: String, where: String) {
         val temp = itemsMap.value
         temp!![what] = where
         itemsMap.value = temp

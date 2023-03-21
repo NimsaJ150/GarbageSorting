@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:textSize="@dimen/text_size"
-        android:text="@string/explain_text"/>
+        android:text="@string/explain_text"
+        android:textSize="@dimen/text_size" />
 
     <!-- Text field to enter item -->
     <EditText
@@ -27,30 +27,20 @@
     <!-- Where button -->
     <Button
         android:id="@+id/where_button"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:background="#39f208"
         android:layout_marginBottom="5dp"
+        android:background="#39f208"
         android:text="@string/where_button" />
 
-    <!-- Button to delete item-->
-    <Button
-        android:id="@+id/delete_button"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_gravity="start"
-        android:background="#39f208"
-        android:layout_marginBottom="5dp"
-        android:text="@string/delete_button" />
-
-    <!-- Add item button
+    <!-- Modify item button-->
     <Button
         android:id="@+id/modify_button"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:background="#39f208"
         android:layout_marginBottom="5dp"
-        android:text="@string/modify_button" />-->
+        android:background="#39f208"
+        android:text="@string/modify_button" />
 </LinearLayout>

@@ -61,6 +61,20 @@ class FragmentModify : Fragment() {
                 .show()
         }
 
+        //define back button onClick activity
+        val backButton: Button= v.findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            // replace fragment
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.container_ui,
+                    FragmentWhere()
+                ).commit()
+        }
+
+        /*
         // define DELETE ITEM onClick activity
         val deleteItem = v.findViewById<Button>(R.id.delete_button)
         deleteItem.setOnClickListener {
@@ -78,6 +92,7 @@ class FragmentModify : Fragment() {
             } else Toast.makeText(requireActivity(), R.string.empty_toast, Toast.LENGTH_LONG)
                 .show()
         }
+         */
 
         return v
     }

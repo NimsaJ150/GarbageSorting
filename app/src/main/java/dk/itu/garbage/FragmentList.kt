@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 
@@ -20,7 +22,7 @@ class FragmentList : Fragment() {
 
     // Model: Database of items
     private lateinit var itemsDB: ItemsDB
-    private lateinit var listThings: TextView
+    private lateinit var itemList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,20 +32,81 @@ class FragmentList : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_list, container, false)
 
-        listThings = v.findViewById<TextView>(R.id.listItems)
-        listThings.movementMethod = ScrollingMovementMethod()
+        // get itemList view
+        itemList = v.findViewById<RecyclerView>(R.id.listItems)
+        itemList.layoutManager = LinearLayoutManager(context)
 
+        // create and set the appropriate adaptor
+        val mAdapter = ItemAdapter()
+        itemList.adapter = mAdapter
+
+        // observe changes in the itemsDB and notify adaptor
         itemsDB.itemsMap.observe(viewLifecycleOwner) {
-            listThings.text = "Sorting List:" + itemsDB.listItems()
+            mAdapter.notifyDataSetChanged()
         }
 
         return v
+    }
+
+    /**
+     * Called every time one row appears on the screen
+     */
+    private inner class ItemHolder(itemView: View, _itemsDB: ItemsDB) :
+        RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        // define the textviews of one row in the recyclerview
+        private val mNoTextView: TextView
+        private val mWhatTextView: TextView
+        private val mWhereTextView: TextView
+
+        init {
+            // get the textviews of one row in the recyclerview
+            mNoTextView = itemView.findViewById(R.id.item_no)
+            mWhatTextView = itemView.findViewById(R.id.item_what)
+            mWhereTextView = itemView.findViewById(R.id.item_where)
+            itemView.setOnClickListener(this)
+        }
+
+        /**
+         * Delete item when user clicks on the particular row
+         */
+        override fun onClick(v: View) {
+            val what = (v.findViewById(R.id.item_what)// The what TextView
+                    as TextView).text // Read the contents of the TextView
+                    as String // Cast to String type
+            itemsDB.removeItem(what)
+        }
+
+        fun bind(item: Item, position: Int) {
+            // set the textviews of one row in the recyclerview
+            mNoTextView.text = position.toString()
+            mWhatTextView.text = item.mWhat
+            mWhereTextView.text = item.mWhere
+        }
+    }
+
+    /**
+     * Link between data and layout
+     */
+    private inner class ItemAdapter : RecyclerView.Adapter<ItemHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+            val layoutInflater = LayoutInflater.from(context)
+            val v = layoutInflater.inflate(R.layout.one_row, parent, false)
+            return ItemHolder(v, itemsDB)
+        }
+
+        override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+            val item = itemsDB.getAllList()[position]
+            holder.bind(item, position)
+        }
+
+        override fun getItemCount(): Int {
+            return itemsDB.size()
+        }
     }
 
 }
