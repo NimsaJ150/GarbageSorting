@@ -20,13 +20,13 @@ import androidx.lifecycle.ViewModelProvider
 class FragmentWhere : Fragment() {
 
     // Model: Database of items
-    private lateinit var itemsDB: ItemsDB
+    private lateinit var itemsDB: ItemsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // define items
-        itemsDB = ViewModelProvider(requireActivity())[ItemsDB::class.java]
+        // Shared data
+        itemsDB = ViewModelProvider(requireActivity())[ItemsViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -44,7 +44,7 @@ class FragmentWhere : Fragment() {
             // get text from input
             val itemText = insertItem.text.toString()
             // retrieve location from ItemsDB
-            val itemWhere = itemsDB.getItemWhere(itemText)
+            val itemWhere = itemsDB.findItem(itemText)
 
             // output result
             insertItem.append(String.format(" should be placed in: %s", itemWhere))

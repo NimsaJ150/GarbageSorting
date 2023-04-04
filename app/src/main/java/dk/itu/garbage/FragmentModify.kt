@@ -19,13 +19,13 @@ import androidx.lifecycle.ViewModelProvider
 class FragmentModify : Fragment() {
 
     // Model: Database of items
-    private lateinit var itemsDB: ItemsDB
+    private lateinit var itemsDB: ItemsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // define items
-        itemsDB = ViewModelProvider(requireActivity())[ItemsDB::class.java]
+        // share data
+        itemsDB = ViewModelProvider(requireActivity())[ItemsViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -34,9 +34,6 @@ class FragmentModify : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_modify, container, false)
-
-        // define items
-        itemsDB = ViewModelProvider(requireActivity())[ItemsDB::class.java]
 
         // Text Fields
         val newWhat = v.findViewById<EditText>(R.id.what_text)
