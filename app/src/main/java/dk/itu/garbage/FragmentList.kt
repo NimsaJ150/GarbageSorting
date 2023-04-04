@@ -1,7 +1,6 @@
 package dk.itu.garbage
 
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,14 +20,14 @@ import java.util.*
 class FragmentList : Fragment() {
 
     // Model: Database of items
-    private lateinit var itemsDB: ItemsDB
+    private lateinit var itemsDB: ItemsViewModel
     private lateinit var itemList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // define items
-        itemsDB = ViewModelProvider(requireActivity())[ItemsDB::class.java]
+        // Shared data
+        itemsDB = ViewModelProvider(requireActivity())[ItemsViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -46,7 +45,7 @@ class FragmentList : Fragment() {
         itemList.adapter = mAdapter
 
         // observe changes in the itemsDB and notify adaptor
-        itemsDB.itemsMap.observe(viewLifecycleOwner) {
+        itemsDB.getValue().observe(viewLifecycleOwner) {
             mAdapter.notifyDataSetChanged()
         }
 
@@ -56,7 +55,7 @@ class FragmentList : Fragment() {
     /**
      * Called every time one row appears on the screen
      */
-    private inner class ItemHolder(itemView: View, _itemsDB: ItemsDB) :
+    private inner class ItemHolder(itemView: View, _itemsDB: ItemsViewModel) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
         // define the textviews of one row in the recyclerview
         private val mNoTextView: TextView
@@ -84,8 +83,8 @@ class FragmentList : Fragment() {
         fun bind(item: Item, position: Int) {
             // set the textviews of one row in the recyclerview
             mNoTextView.text = position.toString()
-            mWhatTextView.text = item.mWhat
-            mWhereTextView.text = item.mWhere
+            mWhatTextView.text = item.what
+            mWhereTextView.text = item.where
         }
     }
 
@@ -100,7 +99,7 @@ class FragmentList : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-            val item = itemsDB.getAllList()[position]
+            val item = itemsDB.getList()[position]!!
             holder.bind(item, position)
         }
 

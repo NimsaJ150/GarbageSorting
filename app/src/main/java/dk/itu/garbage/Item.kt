@@ -1,14 +1,19 @@
 package dk.itu.garbage
 
-class Item (what: String, where: String) {
-    val mWhat: String = what
-    val mWhere: String = where
+class Item(what: String, where: String) {
+    var what: String
+    var where: String
 
-    private fun oneLine(pre: String, post: String): String {
-        return pre + mWhat + post + mWhere
+    init {
+        this.what= what
+        this.where=where
     }
 
     override fun toString(): String {
-        return oneLine("", " in: ")
+        return oneLine()
+    }
+
+    private fun oneLine(): String {
+        return "$what in: $where"
     }
 }

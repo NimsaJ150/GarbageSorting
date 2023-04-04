@@ -1,102 +1,78 @@
 package dk.itu.garbage
 
+import android.content.ContentValues
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
+import android.database.sqlite.SQLiteDatabase
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
+import dk.itu.garbage.database.DBCreate
+import dk.itu.garbage.database.ItemCursorWrapper
+import dk.itu.garbage.database.ItemsDbSchema
 
-//class ItemsDB private constructor(context: Context) : ViewModel() {
 class ItemsDB : ViewModel() {
-    val itemsMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
-
-    init {
-        itemsMap.value = HashMap<String, String>()
-        //fillItemsDB(context)
-        fillItemsDB()
+    companion object {
+        var mDatabase: SQLiteDatabase? = null
     }
 
-    /*
-    Lists the items as a String with newline breaks
+    /**
+     *Must be called by Activity (and only there)
      */
-    fun listItems(): String {
-        val r = StringBuilder()
-        for ((key, value) in itemsMap.value!!) r.append("\n ").append(key).append(" in: ")
-            .append(value)
-        return r.toString()
+    fun initialize(context: Context) {
+        if (mDatabase == null) {
+            mDatabase = DBCreate(context.applicationContext).writableDatabase
+        }
     }
 
-    /*
-    Returns the ItemsDB Hashmap in an ordered List
+    /**
+     *Returns the ItemsDB ArrayList
      */
-    fun getAllList(): MutableList<Item> {
-        val result: MutableList<Item> = ArrayList()
-        for ((key, value) in itemsMap.value!!) {
-            result.add(Item(key, value))
+    fun getValues(): ArrayList<Item> {
+        val items = ArrayList<Item>()
+        val cursor = queryItems(null, null)
+        cursor.moveToFirst()
+        while (!cursor.isAfterLast) {
+            items.add(cursor.item)
+            cursor.moveToNext()
         }
-        return result
-    }
-
-    //private fun fillItemsDB(context: Context) {
-    private fun fillItemsDB() {
-        addItem("test", "test")
-        addItem("test1", "test1")
-        addItem("test2", "test2")
-        addItem("test3", "test3")
-        addItem("test4", "test4")
-        /*
-        try {
-            val reader = BufferedReader(
-                InputStreamReader(context.assets.open("garbage.txt"))
-            )
-            var line = reader.readLine()
-            while (line != null) {
-                val gItem: List<String> = line.split(",")
-                itemsMap[gItem[0]] = gItem[1]
-                line = reader.readLine()
-            }
-        } catch (ignored: IOException) {
-        }
-        */
+        cursor.close()
+        return items
     }
 
     fun addItem(what: String, where: String) {
-        val temp = itemsMap.value
-        temp!![what] = where
-        itemsMap.value = temp
+        val values = ContentValues()
+        values.put(ItemsDbSchema.ItemTable.Cols.WHAT, what)
+        values.put(ItemsDbSchema.ItemTable.Cols.WHERE, where)
+        mDatabase!!.insert(ItemsDbSchema.ItemTable.NAME, null, values)
+    }
 
+    fun updateItem(what: String, where: String) {
+        val values = ContentValues()
+        values.put(ItemsDbSchema.ItemTable.Cols.WHAT, what)
+        values.put(ItemsDbSchema.ItemTable.Cols.WHERE, where)
+        val newItem = Item(what, where)
+        val selection = ItemsDbSchema.ItemTable.Cols.WHAT + " LIKE ?"
+        mDatabase!!.update(ItemsDbSchema.ItemTable.NAME, values, selection, arrayOf(newItem.what))
     }
 
     fun removeItem(what: String) {
-        val temp = itemsMap.value
-        if (temp!![what] != null) temp.remove(what)
-        itemsMap.value = temp
-    }
-
-    fun getItemWhere(what: String?): String {
-        val where: String? = itemsMap.value!![what]
-        // if no match found, then return not found
-        return where ?: "not found"
+        val newItem = Item(what, "")
+        val selection = ItemsDbSchema.ItemTable.Cols.WHAT + " LIKE ?"
+        mDatabase!!.delete(ItemsDbSchema.ItemTable.NAME, selection, arrayOf(newItem.what))
     }
 
     fun size(): Int {
-        return itemsMap.value!!.size
+        return getValues().size
     }
 
-    companion object {
-        private var sItemsDB: ItemsDB? = null
-
-        fun initialize(context: Context) {
-            if (sItemsDB == null) {
-                //sItemsDB = ItemsDB(context)
-                sItemsDB = ItemsDB()
-            }
-        }
-
-        fun get(): ItemsDB {
-            return sItemsDB ?: throw IllegalStateException("ItemsDB must be initializes")
-        }
+    // Database helper methods to convert between Items and database rows
+    private fun queryItems(whereClause: String?, whereArgs: Array<String>?): ItemCursorWrapper {
+        val cursor = mDatabase!!.query(
+            ItemsDbSchema.ItemTable.NAME,
+            null,  // Columns - null selects all columns
+            whereClause, whereArgs,
+            null,  // groupBy
+            null,  // having
+            ItemsDbSchema.ItemTable.Cols.WHAT // orderBy
+        )
+        return ItemCursorWrapper(cursor)
     }
 }
